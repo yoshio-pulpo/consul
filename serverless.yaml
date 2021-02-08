@@ -1,0 +1,29 @@
+service: serverless-consul-kv
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-plugin-optimize
+  - serverless-offline
+  - serverless-plugin-warmup
+
+custom:
+  # Enable warmup on all functions (only for production and staging)
+  warmup:
+    enabled: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+package:
+  individually: true
+  include:
+    - .env
+
+functions:
+  main:
+    handler: src/lambda.handler
+    events:
+      - http:
+          method: any
+          path: /{any*}
